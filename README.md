@@ -1,59 +1,196 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Project Name
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Replace this line with a short description of your project.
 
-## About Laravel
+A Laravel + Livewire application with a Dockerized development environment featuring PHP 8.3, PostgreSQL, Redis, and Vite HMR.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Layer | Technology |
+|---|---|
+| Language | PHP 8.3 (FPM) |
+| Framework | Laravel 11 |
+| Frontend | Livewire + Vite |
+| Database | PostgreSQL 15 |
+| Cache / Queue | Redis |
+| Web Server | Nginx |
+| Dev Server | Vite with HMR |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Getting Started
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clone the repo
 
-## Laravel Sponsors
+```bash
+git clone git@github.com:YOURUSERNAME/your-new-repo.git
+cd your-new-repo
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 2. Set up your environment file
 
-### Premium Partners
+```bash
+cp .env.example .env
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Open `.env` and update the following at minimum:
 
-## Contributing
+```env
+APP_NAME=YourAppName
+APP_URL=http://yourapp.localhost
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+DB_HOST=db
+DB_DATABASE=yourapp
+DB_USERNAME=yourapp
+DB_PASSWORD=secret
 
-## Code of Conduct
+REDIS_HOST=redis
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Update your hosts file
 
-## Security Vulnerabilities
+**WSL2 / Linux / Mac** — add to `/etc/hosts`:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+sudo nano /etc/hosts
+```
+
+```
+127.0.0.1   yourapp.localhost
+```
+
+**Windows** — if accessing from a Windows browser while running in WSL2, also add to `C:\Windows\System32\drivers\etc\hosts`:
+
+```
+127.0.0.1   yourapp.localhost
+```
+
+### 4. Find and replace the skeleton name
+
+Replace all references to the skeleton app name across the following files:
+
+| File | What to change |
+|---|---|
+| `docker-compose.yml` | `container_name`, network name, `DB_DATABASE`, `DB_USERNAME`, `APP_URL` |
+| `docker/nginx/default.conf` | `server_name` |
+| `vite.config.js` | `hmr.host` |
+
+Quick find to catch anything missed:
+
+```bash
+grep -r "nlffitness" --include="*.yml" --include="*.conf" --include="*.js" --include="*.env*" .
+```
+
+### 5. Build and start containers
+
+```bash
+docker compose build --no-cache
+docker compose up -d
+```
+
+### 6. Generate application key
+
+```bash
+docker exec -it your-app-app php artisan key:generate
+```
+
+### 7. Run migrations
+
+```bash
+docker exec -it your-app-app php artisan migrate
+```
+
+Optionally seed the database:
+
+```bash
+docker exec -it your-app-app php artisan db:seed
+```
+
+### 8. Verify everything is running
+
+```bash
+docker ps
+```
+
+You should see five containers running: `app`, `webserver`, `db`, `redis`, `vite`.
+
+Visit `http://yourapp.localhost` in your browser. Vite HMR is served on port `5173` directly.
+
+---
+
+## Daily Development
+
+| Task | Command |
+|---|---|
+| Start | `docker compose up -d` |
+| Stop | `docker compose down` |
+| Tail Vite logs | `docker logs your-app-vite --follow` |
+| Tail app logs | `docker logs your-app-app --follow` |
+| Artisan | `docker exec -it your-app-app php artisan <command>` |
+| Composer | `docker exec -it your-app-app composer <command>` |
+| Rebuild single container | `docker compose up -d --build vite` |
+
+---
+
+## HMR Troubleshooting
+
+If hot module replacement stops working (common on WSL2 due to inotify / Windows filesystem interaction), add polling to `vite.config.js`:
+
+```js
+server: {
+    host: '0.0.0.0',
+    port: 5173,
+    hmr: {
+        host: 'yourapp.localhost',
+        protocol: 'ws'
+    },
+    watch: {
+        usePolling: true,
+        interval: 1000
+    }
+}
+```
+
+Then restart the Vite container:
+
+```bash
+docker compose restart vite
+```
+
+---
+
+## Folder Structure
+
+```
+.
+├── docker/
+│   └── nginx/
+│       └── default.conf            # Nginx server config
+├── docker-compose.yml              # Container orchestration
+├── docker-compose.override.yml     # Local volume overrides
+├── docker-entrypoint.sh            # Container startup logic
+├── Dockerfile                      # Multi-stage build (Node + PHP)
+├── vite.config.js                  # Vite + Laravel + Livewire config
+└── ...                             # Standard Laravel project structure
+```
+
+---
+
+## New Project Checklist
+
+- [ ] Update `APP_NAME` and `APP_URL` in `.env`
+- [ ] Replace all `nlffitness` references in `docker-compose.yml`
+- [ ] Update `server_name` in `docker/nginx/default.conf`
+- [ ] Update `hmr.host` in `vite.config.js`
+- [ ] Add your local domain to `/etc/hosts`
+- [ ] Run `docker compose build --no-cache && docker compose up -d`
+- [ ] Run `php artisan key:generate`
+- [ ] Run `php artisan migrate`
+
+---
 
 ## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Repo - MIT
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).\
