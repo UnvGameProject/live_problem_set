@@ -1,0 +1,14 @@
+services:
+  app:
+    environment:
+      APP_ENV: production
+    read_only: true
+    tmpfs:
+      - /var/www/html/storage/logs
+      - /var/www/html/bootstrap/cache
+
+  webserver:
+    volumes:
+      - ./docker/nginx/prod.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"

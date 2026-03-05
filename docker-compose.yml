@@ -1,0 +1,82 @@
+services:
+  app:
+    build: .
+    container_name: nlffitness-app
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_DATABASE: nlffitness
+      DB_USERNAME: nlffitness
+      DB_PASSWORD: secret
+      REDIS_HOST: redis
+      APP_ENV: local
+      APP_URL: http://nlffitness.localhost
+    networks:
+      - nlffitness-network
+    volumes:
+      - .:/var/www/html
+      - node_modules_data:/var/www/html/node_modules
+    command: ["bash", "docker-entrypoint.sh", "php-fpm"]
+
+  webserver:
+    image: nginx:alpine
+    container_name: nlffitness-web
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - .:/var/www/html
+    depends_on:
+      - app
+    networks:
+      - nlffitness-network
+
+  db:
+    image: postgres:15
+    container_name: nlffitness-postgres
+    environment:
+      POSTGRES_DB: nlffitness
+      POSTGRES_USER: nlffitness
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nlffitness-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nlffitness"]
+      interval: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    container_name: nlffitness-redis
+    networks:
+      - nlffitness-network
+
+  vite:
+    build:
+      context: .
+      target: vite-builder
+    container_name: nlffitness-vite
+    working_dir: /var/www/html        # ← match the volume mount path
+    command: ["bash", "docker-entrypoint.sh", "vite-dev"]
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/var/www/html
+      - node_modules_data:/var/www/html/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - nlffitness-network
+    # removed depends_on — vite doesn't need app/db/redis to start
+
+networks:
+  nlffitness-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  node_modules_data:
