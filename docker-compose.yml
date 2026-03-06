@@ -1,18 +1,18 @@
 services:
   app:
     build: .
-    container_name: nlffitness-app
+    container_name: project_name-app
     restart: unless-stopped
     environment:
       DB_HOST: db
-      DB_DATABASE: nlffitness
-      DB_USERNAME: nlffitness
+      DB_DATABASE: project_name
+      DB_USERNAME: project_name
       DB_PASSWORD: secret
       REDIS_HOST: redis
       APP_ENV: local
-      APP_URL: http://nlffitness.localhost
+      APP_URL: http://project_name.localhost
     networks:
-      - nlffitness-network
+      - project_name-network
     volumes:
       - .:/var/www/html
       - node_modules_data:/var/www/html/node_modules
@@ -20,7 +20,7 @@ services:
 
   webserver:
     image: nginx:alpine
-    container_name: nlffitness-web
+    container_name: project_name-web
     ports:
       - "80:80"
     volumes:
@@ -29,39 +29,39 @@ services:
     depends_on:
       - app
     networks:
-      - nlffitness-network
+      - project_name-network
 
   db:
     image: postgres:15
-    container_name: nlffitness-postgres
+    container_name: project_name-postgres
     environment:
-      POSTGRES_DB: nlffitness
-      POSTGRES_USER: nlffitness
+      POSTGRES_DB: project_name
+      POSTGRES_USER: project_name
       POSTGRES_PASSWORD: secret
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - nlffitness-network
+      - project_name-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nlffitness"]
+      test: ["CMD-SHELL", "pg_isready -U project_name"]
       interval: 5s
       retries: 5
 
   redis:
     image: redis:alpine
-    container_name: nlffitness-redis
+    container_name: project_name-redis
     networks:
-      - nlffitness-network
+      - project_name-network
 
   vite:
     build:
       context: .
       target: vite-builder
-    container_name: nlffitness-vite
-    working_dir: /var/www/html        # ← match the volume mount path
-    command: ["bash", "docker-entrypoint.sh", "vite-dev"]
+    container_name: project_name-vite
+    working_dir: /var/www/html
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
     tty: true
     stdin_open: true
     volumes:
@@ -70,11 +70,10 @@ services:
     ports:
       - "5173:5173"
     networks:
-      - nlffitness-network
-    # removed depends_on — vite doesn't need app/db/redis to start
+      - project_name-network
 
 networks:
-  nlffitness-network:
+  project_name-network:
     driver: bridge
 
 volumes:

@@ -21,7 +21,7 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 5173,
         hmr: {
-            host: 'nlffitness.localhost',
+            host: 'project_name.localhost',
             protocol: 'ws'
         },
         watch: {

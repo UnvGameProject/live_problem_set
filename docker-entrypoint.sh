@@ -24,14 +24,6 @@ case "$1" in
     echo "📦 Starting PHP-FPM..."
     exec php-fpm
     ;;
-  vite-dev)
-    echo "🚀 Starting Vite dev server..."
-    cd /var/www/html
-    if [ ! -d "/var/www/html/node_modules" ]; then
-        npm ci
-    fi
-    exec npm run dev -- --host 0.0.0.0
-    ;;
   *)
     exec "$@"
     ;;
