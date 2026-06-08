@@ -1,12 +1,5 @@
-/* resources/scss/app.scss */
-body {
-    //background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
-    color: purple;
-    background-color: green !important;
-}
+@import "bootstrap/scss/bootstrap";
 
-h1 {
-    color: #007bff;
-    text-align: center;
-}
+@import "interview-demo/base";
+@import "interview-demo/landing";
+@import "interview-demo/demo";

@@ -42,5 +42,12 @@ export default defineConfig({
             '$': 'jquery',
             'jQuery': 'jquery'
         }
+    },
+    test: {
+        environment: 'jsdom',
+        globals: true,
+        setupFiles: [
+            'resources/js/test/setup.js'
+        ]
     }
 });
