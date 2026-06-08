@@ -80,7 +80,7 @@ sudo nano /etc/hosts
 This template uses the placeholder:
 
 ```
-project_name
+fullbaydemo
 ```
 
 Replace it with your project name.
@@ -88,7 +88,7 @@ Replace it with your project name.
 Example:
 
 ```
-project_name → yourapp
+fullbaydemo → yourapp
 ```
 
 Files that contain the placeholder:
@@ -102,7 +102,7 @@ Files that contain the placeholder:
 Helpful command to locate any remaining placeholders:
 
 ```bash
-grep -r "project_name" --include="*.yml" --include="*.conf" --include="*.js" --include="*.env*" .
+grep -r "fullbaydemo" --include="*.yml" --include="*.conf" --include="*.js" --include="*.env*" .
 ```
 
 ---
@@ -119,7 +119,7 @@ docker compose up -d
 ### 6. Generate application key
 
 ```bash
-docker exec -it project_name-app php artisan key:generate
+docker exec -it fullbaydemo-app php artisan key:generate
 ```
 
 ---
@@ -127,13 +127,13 @@ docker exec -it project_name-app php artisan key:generate
 ### 7. Run migrations
 
 ```bash
-docker exec -it project_name-app php artisan migrate
+docker exec -it fullbaydemo-app php artisan migrate
 ```
 
 Optionally seed the database:
 
 ```bash
-docker exec -it project_name-app php artisan db:seed
+docker exec -it fullbaydemo-app php artisan db:seed
 ```
 
 ---
@@ -147,11 +147,11 @@ docker ps
 You should see five containers running:
 
 ```
-project_name-app
-project_name-web
-project_name-postgres
-project_name-redis
-project_name-vite
+fullbaydemo-app
+fullbaydemo-web
+fullbaydemo-postgres
+fullbaydemo-redis
+fullbaydemo-vite
 ```
 
 Visit your application:
@@ -175,10 +175,10 @@ http://yourapp.localhost:5173
 | Start stack         | `docker compose up -d`                                   |
 | Stop stack          | `docker compose down`                                    |
 | Restart Vite        | `docker compose restart vite`                            |
-| Tail Vite logs      | `docker logs project_name-vite --follow`                 |
-| Tail Laravel logs   | `docker logs project_name-app --follow`                  |
-| Run Artisan         | `docker exec -it project_name-app php artisan <command>` |
-| Run Composer        | `docker exec -it project_name-app composer <command>`    |
+| Tail Vite logs      | `docker logs fullbaydemo-vite --follow`                 |
+| Tail Laravel logs   | `docker logs fullbaydemo-app --follow`                  |
+| Run Artisan         | `docker exec -it fullbaydemo-app php artisan <command>` |
+| Run Composer        | `docker exec -it fullbaydemo-app composer <command>`    |
 | Rebuild a container | `docker compose up -d --build vite`                      |
 
 ---
@@ -230,13 +230,13 @@ docker compose restart vite
 ## New Project Checklist
 
 * [ ] Update `APP_NAME` and `APP_URL` in `.env`
-* [ ] Replace all `project_name` placeholders in the repository
+* [ ] Replace all `fullbaydemo` placeholders in the repository
 * [ ] Update `server_name` in `docker/nginx/default.conf`
 * [ ] Update `hmr.host` in `vite.config.js`
 * [ ] Add your local domain to `/etc/hosts`
 * [ ] Run `docker compose build --no-cache && docker compose up -d`
-* [ ] Run `docker exec -it project_name-app php artisan key:generate`
-* [ ] Run `docker exec -it project_name-app php artisan migrate`
+* [ ] Run `docker exec -it fullbaydemo-app php artisan key:generate`
+* [ ] Run `docker exec -it fullbaydemo-app php artisan migrate`
 
 ---
 

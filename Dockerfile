@@ -30,9 +30,11 @@ RUN apt-get update && apt-get install -y \
     && pecl install redis && docker-php-ext-enable redis \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Non-root phpuser (UID/GID matching)
-RUN groupadd -g 1001 phpuser && \
-    useradd -u 1001 -g phpuser -m phpuser && \
+# Non-root phpuser matching host UID/GID for WSL2 bind mounts
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g ${GID} phpuser && \
+    useradd -u ${UID} -g phpuser -m phpuser && \
     echo "phpuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
     mkdir -p /var/www/html/storage/framework/{sessions,views,cache} && \
     mkdir -p /var/www/html/bootstrap/cache && \

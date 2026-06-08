@@ -1,4 +1,2 @@
-import axios from 'axios';
-window.axios = axios;
-
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// Minimal frontend bootstrap for the Fullbay interview demo.
+// Axios is intentionally not loaded. Use browser-native fetch() for demo API calls.

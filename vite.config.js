@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import livewire from '@defstudio/vite-livewire-plugin';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
     plugins: [
@@ -12,16 +13,18 @@ export default defineConfig({
             refresh: [
                 'resources/views/**/*.blade.php',
                 'resources/js/**/*.js',
+                'resources/js/**/*.jsx',
                 'resources/scss/**/*.scss'
             ],
         }),
-        livewire()
+        livewire(),
+        react()
     ],
     server: {
         host: '0.0.0.0',
         port: 5173,
         hmr: {
-            host: 'project_name.localhost',
+            host: 'fullbaydemo.localhost',
             protocol: 'ws'
         },
         watch: {

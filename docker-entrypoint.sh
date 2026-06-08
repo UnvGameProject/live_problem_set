@@ -3,18 +3,19 @@ set -e
 
 echo "Running as user: $(whoami)"
 
-# Only run PHP/Laravel-specific setup if phpuser exists (i.e. in the app container)
-if id "phpuser" &>/dev/null; then
+# Ownership repair should only run when the container is running as root.
+# In this WSL2 setup, phpuser is mapped to the host UID/GID, so runtime chown is unnecessary.
+if [ "$(id -u)" = "0" ] && id "phpuser" &>/dev/null; then
+    echo "Repairing Laravel writable directory ownership..."
     chown -R phpuser:phpuser /var/www/html/storage /var/www/html/bootstrap/cache
     chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-    if [ -d "/var/www/html/node_modules" ]; then
-        chown -R phpuser:phpuser /var/www/html/node_modules
-    fi
+else
+    echo "Skipping ownership repair because container is not running as root."
+    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 fi
 
-# Composer install if missing (app container only)
-if id "phpuser" &>/dev/null && [ ! -d "/var/www/html/vendor" ]; then
+# Composer install if missing.
+if [ ! -d "/var/www/html/vendor" ]; then
     echo "📦 Installing composer dependencies..."
     composer install --no-interaction --prefer-dist
 fi
