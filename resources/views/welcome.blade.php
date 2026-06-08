@@ -6,7 +6,7 @@
 @section('content')
     <section class="landing-hero">
         <div class="landing-hero__content">
-            <p class="eyebrow">Fullbay technical interview preparation</p>
+            <p class="eyebrow">Fullbay technical interview 1</p>
 
             <h1>Service Order Triage Demo</h1>
 

@@ -8,7 +8,8 @@ describe('ServiceOrderDemo', () => {
 
         expect(screen.getByText('Messy service orders')).toBeInTheDocument();
         expect(screen.getByText('Selected order')).toBeInTheDocument();
-        expect(screen.getByText('SO-1001')).toBeInTheDocument();
+        expect(screen.getByText('North River Logistics')).toBeInTheDocument();
+        expect(screen.getAllByText('SO-1001')).toHaveLength(2);
     });
 
     it('updates the selected order when a different order is selected', () => {
