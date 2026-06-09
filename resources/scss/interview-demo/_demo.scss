@@ -5,7 +5,7 @@
 
 .demo-header h1 {
     margin: 0;
-    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-size: clamp(2.25rem, 5vw, 3.6rem);
     letter-spacing: -0.05em;
 }
 
@@ -30,13 +30,9 @@
     min-height: 28rem;
     padding: 1.5rem;
     border: 1px solid var(--border-soft);
-    border-radius: 1.25rem;
-    background: rgba(255, 255, 255, 0.92);
+    border-radius: 1rem;
+    background: var(--surface);
     box-shadow: var(--shadow-soft);
-}
-
-.panel-heading h2 {
-    margin: 0 0 1rem;
 }
 
 .order-list {
@@ -50,7 +46,7 @@
     width: 100%;
     padding: 1rem;
     border: 1px solid var(--border-soft);
-    border-radius: 1rem;
+    border-radius: 0.85rem;
     background: var(--surface-soft);
     color: var(--text-main);
     text-align: left;
@@ -73,7 +69,7 @@
 
 .order-card--active {
     border-color: var(--brand);
-    background: #eff6ff;
+    background: var(--brand-soft);
 }
 
 .order-details {
@@ -86,7 +82,7 @@
 .order-details div {
     padding: 1rem;
     border: 1px solid var(--border-soft);
-    border-radius: 1rem;
+    border-radius: 0.85rem;
     background: var(--surface-soft);
 }
 
@@ -106,9 +102,10 @@
 .hmr-note {
     margin: 1.25rem 0 0;
     padding: 1rem;
-    border-radius: 1rem;
-    background: #ecfdf5;
-    color: #065f46;
+    border: 1px solid #b7e4c7;
+    border-radius: 0.85rem;
+    background: var(--success-bg);
+    color: var(--success-text);
     font-weight: 700;
 }
 
