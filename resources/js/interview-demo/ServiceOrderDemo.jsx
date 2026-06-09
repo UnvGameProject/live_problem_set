@@ -99,7 +99,7 @@ export default function ServiceOrderDemo() {
                 </dl>
 
                 <p className="hmr-note">
-                    HMR check: edit this sentence in ServiceOrderDemo.jsx and the browser should update without a full refresh!
+                    HMR check: edit this sentence in ServiceOrderDemo.jsx and the browser should update without a full.
                 </p>
             </div>
         </div>

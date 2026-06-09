@@ -3,9 +3,9 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite --host 0.0.0.0 --port 5173",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "dev": "vite --host 0.0.0.0 --port 5173 --strictPort",
+    "test": "vitest run --config vitest.config.js",
+    "test:watch": "vitest --config vitest.config.js"
   },
   "devDependencies": {
     "@defstudio/vite-livewire-plugin": "^2.0.6",

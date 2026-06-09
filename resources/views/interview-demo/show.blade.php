@@ -3,6 +3,10 @@
 @section('title', 'Service Order Demo')
 @section('body_class', 'app-shell demo-page')
 
+@push('vite')
+    @vite('resources/js/interview-demo/index.jsx')
+@endpush
+
 @section('content')
     <section class="demo-header">
         <a class="back-link" href="{{ route('landing') }}">

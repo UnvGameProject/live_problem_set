@@ -7,7 +7,7 @@ describe('ServiceOrderDemo', () => {
         render(<ServiceOrderDemo />);
 
         expect(screen.getByText('Messy service orders')).toBeInTheDocument();
-        expect(screen.getByText('Selected order')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Selected order/i })).toBeInTheDocument();
         expect(screen.getByText('North River Logistics')).toBeInTheDocument();
         expect(screen.getAllByText('SO-1001')).toHaveLength(2);
     });

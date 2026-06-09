@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import livewire from '@defstudio/vite-livewire-plugin';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
@@ -9,6 +8,7 @@ export default defineConfig({
             input: [
                 'resources/js/app.js',
                 'resources/scss/app.scss',
+                'resources/js/interview-demo/index.jsx',
             ],
             refresh: [
                 'resources/views/**/*.blade.php',
@@ -17,21 +17,30 @@ export default defineConfig({
                 'resources/scss/**/*.scss'
             ],
         }),
-        livewire(),
         react()
     ],
     server: {
-        host: '0.0.0.0',
-        port: 5173,
-        hmr: {
-            host: 'fullbaydemo.localhost',
-            protocol: 'ws'
-        },
-        watch: {
-            usePolling: true,
-            interval: 1000
-        }
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
+    cors: {
+        origin: [
+            'http://fullbaydemo.localhost',
+            'http://fullbaydemo.localhost:80',
+        ],
+        credentials: true
     },
+    hmr: {
+        host: 'fullbaydemo.localhost',
+        protocol: 'ws',
+        port: 5173,
+        clientPort: 5173
+    },
+    watch: {
+        usePolling: true,
+        interval: 1000
+    }
+},
     build: {
         manifest: 'manifest.json',
         outDir: 'public/build'
@@ -42,12 +51,5 @@ export default defineConfig({
             '$': 'jquery',
             'jQuery': 'jquery'
         }
-    },
-    test: {
-        environment: 'jsdom',
-        globals: true,
-        setupFiles: [
-            'resources/js/test/setup.js'
-        ]
     }
 });
